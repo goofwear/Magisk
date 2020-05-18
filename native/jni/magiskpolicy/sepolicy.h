@@ -1,26 +1,20 @@
-/* sepolicy.h - Header for magiskpolicy non-public APIs
- */
-
-#ifndef _SEPOLICY_H
-#define _SEPOLICY_H
+#pragma once
 
 #include <sepol/policydb/policydb.h>
 
+__BEGIN_DECLS
+
 // Global policydb
-extern policydb_t *policydb;
+extern policydb_t *magisk_policydb;
 
-// hashtab traversal macro
-#define hashtab_for_each(table, ptr) \
-	for (int _i = 0; _i < table->size; ++_i) \
-		for (*ptr = table->htable[_i]; *ptr != NULL; *ptr = (*ptr)->next)
+int create_domain(const char *d);
+int set_domain_state(const char *s, int state);
+int add_typeattribute(const char *type, const char *attr);
+int add_rule(const char *s, const char *t, const char *c, const char *p, int effect, int n);
+int add_xperm_rule(const char *s, const char *t, const char *c, const char *range, int effect, int n);
+int add_type_rule(const char *s, const char *t, const char *c, const char *d, int effect);
+int add_filename_trans(const char *s, const char *t, const char *c, const char *d, const char *o);
+int add_genfscon(const char *name, const char *path, const char *context);
+void strip_dontaudit();
 
-// sepolicy manipulation functions
-int create_domain(char *d);
-int set_domain_state(char* s, int state);
-int add_transition(char *s, char *t, char *c, char *d);
-int add_file_transition(char *s, char *t, char *c, char *d, char* filename);
-int add_typeattribute(char *domainS, char *attr);
-int add_rule(char *s, char *t, char *c, char *p, int effect, int not);
-int add_xperm_rule(char *s, char *t, char *c, char *range, int effect, int not);
-
-#endif
+__END_DECLS

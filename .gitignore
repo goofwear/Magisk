@@ -2,10 +2,8 @@ out
 *.zip
 *.jks
 *.apk
-config.prop
-
-# Manually dumped jars
-snet/libs
+/config.prop
+/update.sh
 
 # Built binaries
 native/out
@@ -17,4 +15,3 @@ native/out
 /.idea
 /build
 /captures
-.externalNativeBuild

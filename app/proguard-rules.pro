@@ -16,19 +16,39 @@
 #   public *;
 #}
 
-# Don't obfuscate, we are open source anyway :)
--dontobfuscate
-
-# BouncyCastle
--keep class org.bouncycastle.jcajce.provider.asymmetric.rsa.**SHA1** { *; }
--keep class org.bouncycastle.jcajce.provider.asymmetric.RSA** { *; }
--keep class org.bouncycastle.jcajce.provider.digest.SHA1** { *; }
--dontwarn javax.naming.**
-
-# Gson
--keepattributes Signature
-
-# Strip logging
--assumenosideeffects class com.topjohnwu.magisk.utils.Logger {
-  public *** debug(...);
+# Kotlin
+-assumenosideeffects class kotlin.jvm.internal.Intrinsics {
+	public static void checkExpressionValueIsNotNull(...);
+	public static void checkNotNullExpressionValue(...);
+	public static void checkReturnedValueIsNotNull(...);
+	public static void checkFieldIsNotNull(...);
+	public static void checkParameterIsNotNull(...);
 }
+
+# Stubs
+-keep class a.* { *; }
+
+# Snet
+-keepclassmembers class com.topjohnwu.magisk.core.utils.SafetyNetHelper { *; }
+-keep,allowobfuscation interface com.topjohnwu.magisk.core.utils.SafetyNetHelper$Callback
+-keepclassmembers class * implements com.topjohnwu.magisk.core.utils.SafetyNetHelper$Callback {
+  void onResponse(int);
+}
+
+# Fragments
+-keep,allowobfuscation class * extends androidx.fragment.app.Fragment
+
+# Strip Timber verbose and debug logging
+-assumenosideeffects class timber.log.Timber.Tree {
+  public void v(**);
+  public void d(**);
+}
+
+# Excessive obfuscation
+-repackageclasses
+-allowaccessmodification
+
+# QOL
+-dontnote **
+-dontwarn com.caverock.androidsvg.**
+-dontwarn ru.noties.markwon.**
